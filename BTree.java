@@ -3,24 +3,8 @@
 
 public class BTree {
 
-    private int T;
-  
-    // Node creation
-    public class Node {
-      int n;
-      int key[] = new int[2 * T - 1];
-      Node child[] = new Node[2 * T];
-      boolean leaf = true;
-  
-      public int Find(int k) {
-        for (int i = 0; i < this.n; i++) {
-          if (this.key[i] == k) {
-            return i;
-          }
-        }
-        return -1;
-      };
-    }
+    public static int T;
+    private Node root;
   
     public BTree(int t) {
       T = t;
@@ -29,7 +13,6 @@ public class BTree {
       root.leaf = true;
     }
   
-    private Node root;
   
     // Search key
     private Node Search(Node node, int key) {
@@ -148,27 +131,4 @@ public class BTree {
       }
     }
   
-    public static void main(String[] args) {
-      BTree b = new BTree(3);
-      b.Insert(8);
-      b.Insert(9);
-      b.Insert(10);
-      b.Insert(11);
-      b.Insert(15);
-      b.Insert(20);
-      b.Insert(17);
-      b.Insert(5);
-      b.Insert(3);
-      b.Insert(13);
-      b.Insert(21);
-      b.Insert(22);
-      b.Show();
-  
-      if (b.Contain(12)) {
-        System.out.println("\nfound");
-      } else {
-        System.out.println("\nnot found");
-      }
-      ;
-    }
   }
