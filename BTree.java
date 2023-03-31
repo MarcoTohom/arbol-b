@@ -32,49 +32,49 @@ public class BTree {
     private Node root;
   
     // Search key
-    private Node Search(Node x, int key) {
+    private Node Search(Node node, int key) {
       int i = 0;
-      if (x == null)
-        return x;
-      for (i = 0; i < x.n; i++) {
-        if (key < x.key[i]) {
+      if (node == null)
+        return node;
+      for (i = 0; i < node.n; i++) {
+        if (key < node.key[i]) {
           break;
         }
-        if (key == x.key[i]) {
-          return x;
+        if (key == node.key[i]) {
+          return node;
         }
       }
-      if (x.leaf) {
+      if (node.leaf) {
         return null;
       } else {
-        return Search(x.child[i], key);
+        return Search(node.child[i], key);
       }
     }
   
     // Splitting the node
-    private void Split(Node x, int pos, Node y) {
-      Node z = new Node();
-      z.leaf = y.leaf;
-      z.n = T - 1;
+    private void Split(Node nodeX, int pos, Node nodeY) {
+      Node nodeZ = new Node();
+      nodeZ.leaf = nodeY.leaf;
+      nodeZ.n = T - 1;
       for (int j = 0; j < T - 1; j++) {
-        z.key[j] = y.key[j + T];
+        nodeZ.key[j] = nodeY.key[j + T];
       }
-      if (!y.leaf) {
+      if (!nodeY.leaf) {
         for (int j = 0; j < T; j++) {
-          z.child[j] = y.child[j + T];
+          nodeZ.child[j] = nodeY.child[j + T];
         }
       }
-      y.n = T - 1;
-      for (int j = x.n; j >= pos + 1; j--) {
-        x.child[j + 1] = x.child[j];
+      nodeY.n = T - 1;
+      for (int j = nodeX.n; j >= pos + 1; j--) {
+        nodeX.child[j + 1] = nodeX.child[j];
       }
-      x.child[pos + 1] = z;
+      nodeX.child[pos + 1] = nodeZ;
   
-      for (int j = x.n - 1; j >= pos; j--) {
-        x.key[j + 1] = x.key[j];
+      for (int j = nodeX.n - 1; j >= pos; j--) {
+        nodeX.key[j + 1] = nodeX.key[j];
       }
-      x.key[pos] = y.key[T - 1];
-      x.n = x.n + 1;
+      nodeX.key[pos] = nodeY.key[T - 1];
+      nodeX.n = nodeX.n + 1;
     }
   
     // Inserting a value
@@ -94,31 +94,30 @@ public class BTree {
     }
   
     // Insert the node
-    final private void insertValue(Node x, int k) {
-  
-      if (x.leaf) {
+    final private void insertValue(Node node, int k) {
+
+      if (node.leaf) {
         int i = 0;
-        for (i = x.n - 1; i >= 0 && k < x.key[i]; i--) {
-          x.key[i + 1] = x.key[i];
+        for (i = node.n - 1; i >= 0 && k < node.key[i]; i--) {
+          node.key[i + 1] = node.key[i];
         }
-        x.key[i + 1] = k;
-        x.n = x.n + 1;
+        node.key[i + 1] = k;
+        node.n = node.n + 1;
       } else {
         int i = 0;
-        for (i = x.n - 1; i >= 0 && k < x.key[i]; i--) {
-        }
-        ;
+        for (i = node.n - 1; i >= 0 && k < node.key[i]; i--) {
+        };
         i++;
-        Node tmp = x.child[i];
+        Node tmp = node.child[i];
         if (tmp.n == 2 * T - 1) {
-          Split(x, i, tmp);
-          if (k > x.key[i]) {
+          Split(node, i, tmp);
+          if (k > node.key[i]) {
             i++;
           }
         }
-        insertValue(x.child[i], k);
+        insertValue(node.child[i], k);
       }
-  
+
     }
   
     public void Show() {
@@ -126,14 +125,16 @@ public class BTree {
     }
   
     // Display
-    private void Show(Node x) {
-      assert (x == null);
-      for (int i = 0; i < x.n; i++) {
-        System.out.print(x.key[i] + " ");
+    private void Show(Node node) {
+      assert (node == null);
+      for (int i = 0; i < node.n; i++) {
+        System.out.print(node.key[i] + " ");
       }
-      if (!x.leaf) {
-        for (int i = 0; i < x.n + 1; i++) {
-          Show(x.child[i]);
+      if (!node.leaf) {
+        System.out.println("");
+        for (int i = 0; i < node.n + 1; i++) {
+          Show(node.child[i]);
+          System.out.print(" - ");
         }
       }
     }
@@ -156,7 +157,11 @@ public class BTree {
       b.Insert(15);
       b.Insert(20);
       b.Insert(17);
-  
+      b.Insert(5);
+      b.Insert(3);
+      b.Insert(13);
+      b.Insert(21);
+      b.Insert(22);
       b.Show();
   
       if (b.Contain(12)) {
