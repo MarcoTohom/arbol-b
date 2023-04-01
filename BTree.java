@@ -13,8 +13,11 @@ public class BTree {
     root.leaf = true;
   }
 
+  public Node getRoot(){
+    return root;
+  }
   // Search key
-  private Node Search(Node node, int key) {
+  public Node Search(Node node, int key) {
     int i = 0;
     if (node == null)
       return node;
